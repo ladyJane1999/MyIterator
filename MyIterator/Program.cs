@@ -3,7 +3,7 @@
     public static IEnumerable<int> GetEnumaration()
     {
         int i = 0;
-        while (i < 10)
+        while (true)
         {
             yield return i++;
         }
