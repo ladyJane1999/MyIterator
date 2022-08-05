@@ -11,7 +11,6 @@
 
     public static IEnumerable<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
     {
-        // return enumerator.Where(predicate);
 
         int[] array = enumerator.ToArray();
         int whereSize = 0;
@@ -40,7 +39,6 @@
 
     public static IEnumerable<int> MyTake(this IEnumerable<int> enumerator, int count)
     {
-        // return enumerator.Take(count);
 
         int[] array = enumerator.ToArray();
         int[] result = new int[count];
