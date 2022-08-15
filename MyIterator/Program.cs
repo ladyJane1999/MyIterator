@@ -1,5 +1,7 @@
 ﻿public static class Program
 {
+    public static Func<int, bool> Predicate;
+
     public static IEnumerable<int> GetEnumaration()
     {
         int i = 0;
@@ -11,44 +13,22 @@
 
     public static IEnumerable<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
     {
+        Predicate = predicate;
 
-        int[] array = enumerator.ToArray();
-        int whereSize = 0;
-
-        for (int i = 0; i < array.Length; i++)
-        {
-            if (predicate(array[i]))
-            {
-                whereSize++;
-            }
-        }
-
-        int[] result = new int[whereSize];
-        int j = 0;
-        for (int i = 0; i < array.Length; i++)
-        {
-            if (predicate(array[i]))
-            {
-                result[j] = array[i];
-                j++;
-            }
-        }
-
-        return result.AsEnumerable();
+        return new BaseEnumerator<int>(Predicate);
     }
 
     public static IEnumerable<int> MyTake(this IEnumerable<int> enumerator, int count)
     {
+        var en = new IndexedEnumerator<int>(enumerator.GetEnumerator());
 
-        int[] array = enumerator.ToArray();
-        int[] result = new int[count];
-
-        for (int i = 0; i < count; i++)
+        int cnt = 0;
+        while (cnt < count)
         {
-            result[i] = array[i];
+            en.MoveNext();
         }
 
-        return result.AsEnumerable();
+        return new IndexedEnumerator<int>().AsEnumerable();
     }
 
     public static void Main()
