@@ -1,7 +1,8 @@
 ﻿public static class Program
 {
-   public static Func<int, bool> Predicate;
+  public static Func<int, bool> Predicate;
 
+    public static MyIterator<int> enumer;
     public static IEnumerable<int> GetEnumaration()
     {
         int i = 0;
@@ -11,15 +12,18 @@
         }
     }
 
-    public static IEnumerable<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
+    public static MyIterator<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
     {
         Predicate = predicate;
-        return new MyIterator<int>(enumerator.GetEnumerator(), predicate); 
+        enumer = new MyIterator<int>(enumerator.GetEnumerator(), predicate);
+        return enumer; 
     }
 
-    public static IEnumerable<int> MyTake(this IEnumerable<int> enumerator, int count)
+    public static IEnumerable<int> MyTake(this MyIterator<int> enumer, int count)
     {
-        var en = new MyIterator<int>(enumerator.GetEnumerator(), Predicate);
+        // var en = new MyIterator<int>(enumerator.GetEnumerator(), Predicate);
+        Console.WriteLine(enumer);
+       var en = enumer.GetEnumerator();
        int cnt = 0;
         while (cnt <= count)
         {
