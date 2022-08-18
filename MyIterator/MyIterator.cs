@@ -26,7 +26,6 @@ namespace Iterator
     class MyIterator : IEnumerator<int>
     {
         private int _current;
-        private int _state;
         private readonly int _start;
         private readonly Func<int, bool> _func;
         public int Current => _current;
@@ -45,7 +44,6 @@ namespace Iterator
             {
                 case false:
                     _current = _start;
-                    _state = 1;
                     break;
                 case true:
                     _current += 2;
@@ -57,7 +55,6 @@ namespace Iterator
 
         public void Reset()
         {
-            _state = 0;
         }
 
         public void Dispose()
