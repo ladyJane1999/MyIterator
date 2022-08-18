@@ -7,58 +7,61 @@ using System.Threading.Tasks;
 
 namespace Helpers
 {
-    public class MyIterator<T> : IEnumerator<T>, IEnumerable<T>
+   class MyEnumerable : IEnumerable<int>
     {
-        public Func<int, bool> Predicate;
+        private readonly int _start;
+        private readonly Func<int, bool> _func;
 
-        public IEnumerator<T> enumerator;
-        public MyIterator(IEnumerator<T> enumer, Func<int, bool> predicate)
+        public MyEnumerable(int start, Func<int, bool> func)
         {
-            Predicate = predicate;
-            enumerator = enumer;
+            _start = start;
+            _func = func;
+        }
 
-        }
-        public T Current => enumerator.Current;
-        object IEnumerator.Current => enumerator.Current;
-        void IDisposable.Dispose()
+        public IEnumerator<int> GetEnumerator() => new MyIterator(_start, _func);
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    class MyIterator : IEnumerator<int>
+    {
+        private int _current;
+        private int _state;
+        private readonly int _start;
+        private readonly Func<int, bool> _func;
+        public int Current => _current;
+        object IEnumerator.Current => Current;
+
+        public MyIterator(int start, Func<int, bool> func)
         {
-           
+            _start = start;
+            _current = start;
+            _func = func;
         }
-        public int Index { get; private set; }
-        public int Count { get; private set; }
-        public int SetT(int count)
-        {
-            Count = count;
-            return Count;
-        }
+
         public bool MoveNext()
         {
-            if (Predicate(Index))
+            switch (_func(_current))
             {
-                Console.WriteLine(Index);
-                Index++;
-                return true;
+                case false:
+                    _current = _start;
+                    _state = 1;
+                    break;
+                case true:
+                    _current += 2;
+                    break;
+            
             }
-            Index++;
-            return false;
+            return true;
         }
 
-        void IEnumerator.Reset()
+        public void Reset()
         {
-           
-        }
-        public virtual IEnumerator<T> GetEnumerator()
-        {
-            return enumerator;
-        }
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return GetEnumerator();
+            _state = 0;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public void Dispose()
         {
-            return enumerator;
         }
     }
 }
