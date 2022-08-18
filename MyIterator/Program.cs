@@ -1,8 +1,6 @@
-﻿public static class Program
+public static class Program
 {
-  public static Func<int, bool> Predicate;
 
-    public static MyIterator<int> enumer;
     public static IEnumerable<int> GetEnumaration()
     {
         int i = 0;
@@ -11,29 +9,29 @@
             yield return i++;
         }
     }
+   
 
-    public static MyIterator<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
+    public static IEnumerable<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
     {
-        Predicate = predicate;
-        enumer = new MyIterator<int>(enumerator.GetEnumerator(), predicate);
-        return enumer; 
+        return new MyEnumerable(-2, predicate); ; 
     }
 
-    public static IEnumerable<int> MyTake(this MyIterator<int> enumer, int count)
+    public static int[] MyTake(this IEnumerable<int> enumer, int count)
     {
-        // var en = new MyIterator<int>(enumerator.GetEnumerator(), Predicate);
-        Console.WriteLine(enumer);
-       var en = enumer.GetEnumerator();
-       int cnt = 0;
-        while (cnt <= count)
+        var en = enumer.GetEnumerator();
+        var arr = new int[count];   
+        int cnt = 0;
+      
+        while (cnt < count)
         {
             if(en.MoveNext())
             {
+                arr[cnt]=en.Current;
                 cnt++;
             }
         }
 
-        return GetEnumaration();
+        return arr;
     }
 
     public static void Main()
@@ -44,10 +42,11 @@
         }
         Console.WriteLine("------------");
 
-        foreach (var item in GetEnumaration().MyWhere(x => x % 2 == 0).MyTake(5))
+        foreach (var item in GetEnumaration().MyWhere( x => x % 2 == 0).MyTake(5))
         {
             Console.WriteLine(item);
         }
         Console.ReadLine();
     }
 }
+
