@@ -1,6 +1,5 @@
 public static class Program
 {
-
     public static IEnumerable<int> GetEnumaration()
     {
         int i = 0;
