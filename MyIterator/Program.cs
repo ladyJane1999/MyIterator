@@ -10,7 +10,6 @@ public static class Program
         }
     }
    
-
     public static IEnumerable<int> MyWhere(this IEnumerable<int> enumerator, Func<int, bool> predicate)
     {
         return new MyEnumerable(-2, predicate); ; 
